@@ -1,13 +1,15 @@
 {
   "name": "METAC - RISE",
   "description": "A Phaser 3 TypeScript template using Vite.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/phaserjs/template-vite-ts.git"
   },
   "author": "Brandon Adolf",
-  "contributors": ["Phaser Studio <support@phaser.io> (https://phaser.io/)"],
+  "contributors": [
+    "Phaser Studio <support@phaser.io> (https://phaser.io/)"
+  ],
   "license": "MIT",
   "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
   "bugs": {
