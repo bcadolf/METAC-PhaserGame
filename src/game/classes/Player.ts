@@ -1,9 +1,15 @@
 import { Physics, Input, Scene, Types } from 'phaser';
+import { Shield, Weapon } from './Equipment';
+import { EQUIP_LIBRARY } from '../data/EquipData';
 
 export class Player extends Physics.Arcade.Sprite {
-  cursors: Types.Input.Keyboard.CursorKeys;
-  wasd: any;
-  baseSpeed: number = 100;
+  private cursors: Types.Input.Keyboard.CursorKeys;
+  private wasd: any;
+  private baseSpeed: number = 100;
+  public activeShield: Shield;
+  public activeWeapon: Weapon;
+  public chips: number;
+  private nextAttackTime: number = 0;
 
   constructor(scene: Scene, x: number, y: number) {
     super(scene, x, y, 'Metac1');
@@ -20,6 +26,10 @@ export class Player extends Physics.Arcade.Sprite {
       left: Input.Keyboard.KeyCodes.A,
       right: Input.Keyboard.KeyCodes.D,
     });
+
+    // starting weapons
+    this.activeShield = scene.registry.get('activeShield');
+    this.activeWeapon = scene.registry.get('activeWeapon');
   }
 
   createAnimations(scene: Scene) {
@@ -33,7 +43,38 @@ export class Player extends Physics.Arcade.Sprite {
     });
   }
 
-  update() {
+  equipItem(item: Shield | Weapon) {
+    if (item instanceof Shield) {
+      this.activeShield = item;
+      this.scene.registry.set('activeShield', item);
+    } else if (item instanceof Weapon) {
+      this.activeWeapon = item;
+      this.scene.registry.set('activeWeapon', item);
+    }
+  }
+
+  takeDamage(amount: number) {
+    const isHit = this.activeShield.useEnergy(amount);
+    if (isHit) {
+      this.scene.scene.start('GameOver');
+    }
+  }
+
+  startAttack(time: number) {
+    if (time < this.nextAttackTime) {
+      return;
+    }
+
+    this.activeWeapon.attack();
+    this.nextAttackTime = time + this.activeWeapon.attackSpeed;
+  }
+
+  update(time: number) {
+    if (this.cursors.space && this.cursors.space.isDown) {
+      this.startAttack(time);
+    }
+
+    // movement
     const up = this.cursors.up.isDown || this.wasd.up.isDown;
     const down = this.cursors.down.isDown || this.wasd.down.isDown;
     const left = this.cursors.left.isDown || this.wasd.left.isDown;

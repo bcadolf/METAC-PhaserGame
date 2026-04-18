@@ -1,5 +1,11 @@
 import { Scene } from 'phaser';
-import { Player } from '../objects/Player';
+import { Player } from '../classes/Player';
+
+interface SceneData {
+  from: string;
+}
+
+// things to add: recharge station, shop, junk/recycle station, random animation in large room, training dummies
 
 export class HomeBase extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera;
@@ -53,15 +59,15 @@ export class HomeBase extends Scene {
 
     // collisions
     this.physics.add.overlap(this.player, this.transitionExit, () => {
-      this.scene.start('Scraplands');
+      this.scene.start('Scraplands', { from: 'HomeBase' });
     });
     this.physics.add.collider(this.player, this.walls, () => {
       this.player.setVelocity(0);
     });
   }
 
-  update() {
-    this.player.update();
+  update(time: number) {
+    this.player.update(time);
     this.player.createAnimations(this);
   }
 }

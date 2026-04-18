@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { EQUIP_LIBRARY } from '../data/EquipData';
 
 export class Preloader extends Scene {
   constructor() {
@@ -43,20 +44,19 @@ export class Preloader extends Scene {
     });
 
     // textiles
-    this.load.image(
-      'base-transition-strip',
-      'textiles/base-transition-strip.png',
-    );
     this.load.image('home-base', 'textiles/home-base.png');
     this.load.image('scrapland1', 'textiles/Scraplands.png');
     this.load.image('logo', 'logo.png');
   }
 
   create() {
-    //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-    //  For example, you can define global animations here, so we can use them in other scenes.
+    const starterWeapon = EQUIP_LIBRARY.weapons.STARTER();
+    const starterShield = EQUIP_LIBRARY.shields.STARTER();
 
-    //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
+    // registry defaults still need chips, possibly
+    this.registry.set('activeWeapon', starterWeapon);
+    this.registry.set('activeShield', starterShield);
+
     this.scene.start('MainMenu');
   }
 }
