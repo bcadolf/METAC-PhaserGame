@@ -10,6 +10,7 @@ export class Scraplands extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera;
   player: Player;
   spawnXY: { x: number; y: number };
+  pit: Phaser.Physics.Arcade.StaticBody;
 
   constructor() {
     super('Scraplands');
@@ -31,11 +32,20 @@ export class Scraplands extends Scene {
       .image(centerX, centerY, 'scrapland1')
       .setDisplaySize(this.scale.width, this.scale.height);
 
+    // animations
+
+    // interactive scene objects
+    this.pit = this.physics.add.staticBody(200, 200, 96, 96);
+
     this.player = new Player(this, this.spawnXY.x, this.spawnXY.y);
+
+    this.physics.add.collider(this.player, this.pit, () => {
+      this.player.takeDamage(1);
+      this.pit.destroy();
+    });
   }
 
   update(time: number) {
     this.player.update(time);
-    this.player.createAnimations(this);
   }
 }

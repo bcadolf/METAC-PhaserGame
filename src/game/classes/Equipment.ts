@@ -17,12 +17,14 @@ export class Shield extends Equipment {
     name: string,
     public maxEnergy: number,
     durability: number,
+    public price: number,
   ) {
     super(id, name, 'Protects METAC from destruction.', durability);
 
     this.maxEnergy = maxEnergy;
     this.currentEnergy = maxEnergy;
     this.maxCycles = durability * maxEnergy;
+    this.price = price;
   }
 
   recharge(amount: number) {
@@ -36,6 +38,7 @@ export class Shield extends Equipment {
   useEnergy(amount: number) {
     let leftOver = false;
     this.currentEnergy -= amount;
+    console.log('Current Energy: ' + this.currentEnergy);
 
     if (this.currentEnergy < 0) {
       this.currentEnergy = 0;
@@ -67,6 +70,7 @@ export class Weapon extends Equipment {
     public range: number,
     public damage: number,
     public attackSpeed: number,
+    public price: number,
   ) {
     super(id, name, 'Item used for combat.', durability);
 

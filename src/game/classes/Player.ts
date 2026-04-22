@@ -32,12 +32,12 @@ export class Player extends Physics.Arcade.Sprite {
     this.activeWeapon = scene.registry.get('activeWeapon');
   }
 
-  createAnimations(scene: Scene) {
+  static createAnimations(scene: Scene) {
     const anims = scene.anims;
 
     anims.create({
       key: 'move-forward',
-      frames: anims.generateFrameNumbers('Metac1', { start: 0, end: 35 }),
+      frames: anims.generateFrameNumbers('Metac1', { start: 0, end: 29 }),
       frameRate: 15,
       repeat: -1,
     });

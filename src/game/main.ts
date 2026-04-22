@@ -6,6 +6,7 @@ import { AUTO, Game, Scale } from 'phaser';
 import { Preloader } from './scenes/Preloader';
 import { HomeBase } from './scenes/HomeBase';
 import { Scraplands } from './scenes/Scraplands';
+import { UIScene } from './ui/UIScene';
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -25,7 +26,16 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: true,
     },
   },
-  scene: [Boot, Preloader, MainMenu, MainGame, GameOver, HomeBase, Scraplands],
+  scene: [
+    Boot,
+    Preloader,
+    MainMenu,
+    MainGame,
+    GameOver,
+    HomeBase,
+    Scraplands,
+    UIScene,
+  ],
 };
 
 const StartGame = (parent: string) => {

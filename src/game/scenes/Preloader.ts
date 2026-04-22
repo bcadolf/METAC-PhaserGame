@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { EQUIP_LIBRARY } from '../data/EquipData';
+import { Player } from '../classes/Player';
 
 export class Preloader extends Scene {
   constructor() {
@@ -56,6 +57,9 @@ export class Preloader extends Scene {
     // registry defaults still need chips, possibly
     this.registry.set('activeWeapon', starterWeapon);
     this.registry.set('activeShield', starterShield);
+
+    //animation keys
+    Player.createAnimations(this);
 
     this.scene.start('MainMenu');
   }

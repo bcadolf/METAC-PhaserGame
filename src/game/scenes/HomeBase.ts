@@ -13,6 +13,9 @@ export class HomeBase extends Scene {
   transitionExit: Phaser.Physics.Arcade.StaticBody;
   player: Player;
   walls: Phaser.Physics.Arcade.StaticGroup;
+  pit: Phaser.Physics.Arcade.StaticBody;
+  shop: Phaser.Physics.Arcade.StaticBody;
+  isShopOpen: boolean = false;
 
   constructor() {
     super('HomeBase');
@@ -28,7 +31,14 @@ export class HomeBase extends Scene {
       .image(centerX, centerY, 'home-base')
       .setDisplaySize(this.scale.width, this.scale.height);
 
+    this.scene.launch('UIScene');
+    this.scene.bringToTop('UIScene');
+
+    //animations
+
     // interactive scene objects
+    this.pit = this.physics.add.staticBody(200, 200, 96, 96);
+
     this.walls = this.physics.add.staticGroup();
 
     const wallData = [
@@ -40,6 +50,8 @@ export class HomeBase extends Scene {
       { x: 1050, y: 128, w: 400, h: 16 },
       { x: 955, y: centerY - 78, w: 116, h: 26 },
       { x: this.scale.width - 78, y: centerY - 145, w: 152, h: 170 },
+      { x: 920, y: centerY + 145, w: 175, h: 42 },
+      { x: this.scale.width - 78, y: centerY + 145, w: 180, h: 42 },
     ];
 
     wallData.forEach((data) => {
@@ -55,6 +67,8 @@ export class HomeBase extends Scene {
       184,
     );
 
+    this.shop = this.physics.add.staticBody(1020, 150, 96, 96);
+
     this.player = new Player(this, centerX, centerY);
 
     // collisions
@@ -64,10 +78,21 @@ export class HomeBase extends Scene {
     this.physics.add.collider(this.player, this.walls, () => {
       this.player.setVelocity(0);
     });
+    this.physics.add.collider(this.player, this.pit, () => {
+      this.player.takeDamage(10);
+      this.pit.destroy();
+    });
+    this.physics.add.overlap(this.player, this.shop, () => {
+      console.log('Overlap shop');
+      if (!this.isShopOpen) {
+        this.isShopOpen = true;
+        this.scene.get('UIScene').events.emit('open-shop');
+      }
+    });
   }
 
   update(time: number) {
     this.player.update(time);
-    this.player.createAnimations(this);
+    this.events;
   }
 }
